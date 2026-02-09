@@ -68,4 +68,14 @@ Route::get('/install-admin', function () {
     }
 });
 
+Route::get('/check-status', function () {
+    if (!Auth::check()) {
+        return "Not logged in. <a href='/login'>Login</a>";
+    }
+    $user = Auth::user();
+    return "Logged in as: " . $user->name . " (" . $user->email . ")<br>" .
+           "Is Admin: " . ($user->is_admin ? 'YES (true)' : 'NO (false/0)') . "<br>" .
+           "Raw is_admin value: " . var_export($user->is_admin, true);
+});
+
 require __DIR__.'/auth.php';
