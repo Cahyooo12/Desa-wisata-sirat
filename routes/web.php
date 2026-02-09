@@ -53,21 +53,16 @@ Route::get('/install-admin', function () {
     try {
         Artisan::call('migrate', ['--force' => true]);
         
-        $user = \App\Models\User::firstOrCreate(
+        $user = \App\Models\User::updateOrCreate(
             ['email' => 'admin@desawisata.com'],
             [
-                'name' => 'Admin',
+                'name'     => 'Admin',
                 'password' => bcrypt('password123'),
                 'is_admin' => true,
             ]
         );
         
-        if (!$user->is_admin) {
-            $user->is_admin = true;
-            $user->save();
-        }
-        
-        return "Admin created successfully. Email: admin@desawisata.com, Password: password123";
+        return "SUCCESS! Admin account updated.<br>Email: admin@desawisata.com<br>Password: password123<br><br><a href='/login'>Go to Login</a>";
     } catch (\Exception $e) {
         return "Error: " . $e->getMessage();
     }
