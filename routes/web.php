@@ -47,4 +47,30 @@ Route::post('/cart/clear', [App\Http\Controllers\CartController::class, 'clear']
 // Checkout Route
 Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'store'])->name('checkout.store');
 
+
+// Temporary route to install admin on deployment
+Route::get('/install-admin', function () {
+    try {
+        Artisan::call('migrate', ['--force' => true]);
+        
+        $user = \App\Models\User::firstOrCreate(
+            ['email' => 'admin@desawisata.com'],
+            [
+                'name' => 'Admin',
+                'password' => bcrypt('password123'),
+                'is_admin' => true,
+            ]
+        );
+        
+        if (!$user->is_admin) {
+            $user->is_admin = true;
+            $user->save();
+        }
+        
+        return "Admin created successfully. Email: admin@desawisata.com, Password: password123";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
+
 require __DIR__.'/auth.php';
