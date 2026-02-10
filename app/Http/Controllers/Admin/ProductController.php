@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -48,8 +48,8 @@ class ProductController extends Controller
 
         // Override with uploaded file if present
         if ($request->hasFile('image_file')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('image_file')->getRealPath())->getSecurePath();
-            $data['image'] = $uploadedFileUrl;
+            $path = $request->file('image_file')->store('products', 'public');
+            $data['image'] = url('storage/' . $path);
         }
 
         Product::create($data);
@@ -98,8 +98,8 @@ class ProductController extends Controller
 
         // Override with uploaded file if present
         if ($request->hasFile('image_file')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('image_file')->getRealPath())->getSecurePath();
-            $data['image'] = $uploadedFileUrl;
+            $path = $request->file('image_file')->store('products', 'public');
+            $data['image'] = url('storage/' . $path);
         }
 
         $product->update($data);

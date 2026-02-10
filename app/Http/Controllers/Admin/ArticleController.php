@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use Illuminate\Http\Request;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -49,8 +49,8 @@ class ArticleController extends Controller
 
         // Override with uploaded file if present
         if ($request->hasFile('image_file')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('image_file')->getRealPath())->getSecurePath();
-            $data['image'] = $uploadedFileUrl;
+            $path = $request->file('image_file')->store('articles', 'public');
+            $data['image'] = url('storage/' . $path);
         }
 
         Article::create($data);
@@ -98,8 +98,8 @@ class ArticleController extends Controller
 
         // Override with uploaded file if present
         if ($request->hasFile('image_file')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('image_file')->getRealPath())->getSecurePath();
-            $data['image'] = $uploadedFileUrl;
+            $path = $request->file('image_file')->store('articles', 'public');
+            $data['image'] = url('storage/' . $path);
         }
 
         $article->update($data);
