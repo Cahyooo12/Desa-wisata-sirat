@@ -12,6 +12,22 @@
 
     <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden animate-reveal">
         <div class="p-10 md:p-14">
+            @if ($errors->any())
+                <div class="mb-8 p-6 bg-rose-50 border border-rose-100 rounded-2xl animate-fade-in-down">
+                    <div class="flex items-start gap-4">
+                        <span class="material-symbols-outlined text-rose-500 mt-0.5">error</span>
+                        <div>
+                            <h3 class="font-black text-rose-900 text-lg mb-1">Terjadi Kesalahan</h3>
+                            <ul class="list-disc list-inside text-rose-700 font-bold text-sm space-y-1">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data" class="space-y-8">
                 @csrf
                 @method('PUT')
@@ -21,38 +37,38 @@
                     <div class="space-y-6">
                         <div>
                             <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Nama Produk</label>
-                            <input type="text" name="name" value="{{ $product->name }}" required class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900">
+                            <input type="text" name="name" value="{{ old('name', $product->name) }}" required class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900">
                         </div>
 
                         <div>
                             <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Kategori</label>
                             <select name="category" class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900">
-                                <option value="Drink" {{ $product->category == 'Drink' ? 'selected' : '' }}>Drink</option>
-                                <option value="Care" {{ $product->category == 'Care' ? 'selected' : '' }}>Care</option>
-                                <option value="Seed" {{ $product->category == 'Seed' ? 'selected' : '' }}>Seed</option>
-                                <option value="Other" {{ $product->category == 'Other' ? 'selected' : '' }}>Other</option>
+                                <option value="Drink" {{ old('category', $product->category) == 'Drink' ? 'selected' : '' }}>Drink</option>
+                                <option value="Care" {{ old('category', $product->category) == 'Care' ? 'selected' : '' }}>Care</option>
+                                <option value="Seed" {{ old('category', $product->category) == 'Seed' ? 'selected' : '' }}>Seed</option>
+                                <option value="Other" {{ old('category', $product->category) == 'Other' ? 'selected' : '' }}>Other</option>
                             </select>
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Harga (Rp)</label>
-                                <input type="number" name="price" value="{{ $product->price }}" required class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900">
+                                <input type="number" name="price" value="{{ old('price', $product->price) }}" required class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900">
                             </div>
                             <div>
                                 <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Stok</label>
-                                <input type="number" name="stock" value="{{ $product->stock }}" class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900">
+                                <input type="number" name="stock" value="{{ old('stock', $product->stock) }}" class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900">
                             </div>
                         </div>
 
                         <div>
                             <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Ukuran / Berat</label>
-                            <input type="text" name="size" value="{{ $product->size }}" class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900" placeholder="Misal: 250ml, 100gr">
+                            <input type="text" name="size" value="{{ old('size', $product->size) }}" class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900" placeholder="Misal: 250ml, 100gr">
                         </div>
 
                         <div>
                             <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Deskripsi Ringkas</label>
-                            <textarea name="description" rows="4" class="w-full px-6 py-4 rounded-[2rem] bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900">{{ $product->description }}</textarea>
+                            <textarea name="description" rows="4" class="w-full px-6 py-4 rounded-[2rem] bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900">{{ old('description', $product->description) }}</textarea>
                         </div>
                     </div>
 
@@ -69,7 +85,7 @@
                                         </div>
                                     </div>
                                 @endif
-                                <input type="text" name="image" value="{{ $product->image }}" placeholder="Paste URL Gambar Baru" class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900 text-sm">
+                                <input type="text" name="image" value="{{ old('image', $product->image) }}" placeholder="Paste URL Gambar Baru" class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900 text-sm">
                                 <div class="relative">
                                     <input type="file" name="image_file" class="hidden" id="image_file">
                                     <label for="image_file" class="w-full h-32 border-2 border-dashed border-slate-200 rounded-[2rem] flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-slate-50 transition-colors">
@@ -83,8 +99,8 @@
                         <div>
                             <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Komposisi & Penggunaan</label>
                             <div class="space-y-4">
-                                <textarea name="ingredients" rows="2" class="w-full px-6 py-4 rounded-[1.5rem] bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900 text-sm" placeholder="Komposisi...">{{ $product->ingredients }}</textarea>
-                                <textarea name="usage" rows="2" class="w-full px-6 py-4 rounded-[1.5rem] bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900 text-sm" placeholder="Cara pakai...">{{ $product->usage }}</textarea>
+                                <textarea name="ingredients" rows="2" class="w-full px-6 py-4 rounded-[1.5rem] bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900 text-sm" placeholder="Komposisi...">{{ old('ingredients', $product->ingredients) }}</textarea>
+                                <textarea name="usage" rows="2" class="w-full px-6 py-4 rounded-[1.5rem] bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900 text-sm" placeholder="Cara pakai...">{{ old('usage', $product->usage) }}</textarea>
                             </div>
                         </div>
                     </div>
