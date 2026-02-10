@@ -1,73 +1,73 @@
-<x-admin-layout>
+<x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center gap-4">
-            <a href="{{ route('admin.articles.index') }}" class="p-2 bg-white rounded-xl shadow-sm text-slate-400 hover:text-primary transition-colors">
-                <span class="material-symbols-outlined">arrow_back</span>
-            </a>
-            <h2 class="font-black text-3xl text-slate-900 tracking-tight">
-                {{ __('Tulis Artikel Baru') }}
-            </h2>
-        </div>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Tambah Berita Baru') }}
+        </h2>
     </x-slot>
 
-    <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden animate-reveal">
-        <div class="p-10 md:p-14">
-            <form action="{{ route('admin.articles.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
-                @csrf
-                
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                    {{-- Main Content --}}
-                    <div class="lg:col-span-2 space-y-6">
-                        <div>
-                            <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Judul Artikel</label>
-                            <input type="text" name="title" required class="w-full h-16 px-8 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-black text-xl text-slate-900 shadow-inner" placeholder="Masukkan judul yang menarik...">
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <form action="{{ route('admin.articles.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+
+                        <!-- Title -->
+                        <div class="mb-4">
+                            <label for="title" class="block text-sm font-medium text-gray-700">Judul Berita</label>
+                            <input type="text" name="title" id="title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
                         </div>
 
-                        <div>
-                            <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Konten Artikel</label>
-                            <textarea name="content" rows="15" required class="w-full px-8 py-6 rounded-[2.5rem] bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-medium text-slate-700 leading-relaxed shadow-inner" placeholder="Mulai menulis cerita Anda di sini..."></textarea>
-                        </div>
-                    </div>
-
-                    {{-- Sidebar Settings --}}
-                    <div class="space-y-8">
-                        <div>
-                            <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Kategori</label>
-                            <input type="text" name="category" required class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900" placeholder="Misal: Wisata, Kuliner">
+                        <!-- Category -->
+                        <div class="mb-4">
+                            <label for="category" class="block text-sm font-medium text-gray-700">Kategori</label>
+                            <select name="category" id="category" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                <option value="Berita">Berita</option>
+                                <option value="Kegiatan">Kegiatan</option>
+                                <option value="Pengumuman">Pengumuman</option>
+                                <option value="Wisata">Wisata</option>
+                            </select>
                         </div>
 
-                        <div>
-                            <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Ringkasan (Excerpt)</label>
-                            <textarea name="excerpt" rows="4" required class="w-full px-6 py-4 rounded-[1.5rem] bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900 text-sm" placeholder="Tuliskan intisari artikel..."></textarea>
+                         <!-- Excerpt -->
+                         <div class="mb-4">
+                            <label for="excerpt" class="block text-sm font-medium text-gray-700">Ringkasan (Excerpt)</label>
+                            <textarea name="excerpt" id="excerpt" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required></textarea>
+                            <p class="text-xs text-gray-500 mt-1">Ditampilkan di halaman depan.</p>
                         </div>
 
-                        <div>
-                            <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Cover Image</label>
-                            <div class="relative">
-                                <input type="file" name="image" class="hidden" id="image">
-                                <label for="image" class="w-full h-48 border-2 border-dashed border-slate-200 rounded-[2rem] flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-slate-50 transition-colors group">
-                                    <div class="size-12 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                                        <span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">image</span>
-                                    </div>
-                                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Upload Banner</span>
-                                </label>
-                            </div>
+                        <!-- Content -->
+                        <div class="mb-4">
+                            <label for="content" class="block text-sm font-medium text-gray-700">Isi Berita</label>
+                            <textarea name="content" id="content" rows="10" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required></textarea>
                         </div>
 
-                        <div class="p-6 bg-purple-50 rounded-[2rem] border border-purple-100 italic text-purple-700 text-xs leading-relaxed">
-                            <span class="font-black uppercase block mb-1">SEO Tip:</span>
-                            Gunakan judul yang mengandung kata kunci populer untuk memudahkan artikel ditemukan di mesin pencari.
+                        <!-- Image -->
+                        <div class="mb-4">
+                            <label for="image" class="block text-sm font-medium text-gray-700">Gambar Utama</label>
+                            <input type="file" name="image" id="image" class="mt-1 block w-full text-sm text-gray-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-indigo-50 file:text-indigo-700
+                                hover:file:bg-indigo-100" accept="image/*">
                         </div>
-                    </div>
+
+                        <!-- Published At -->
+                         <div class="mb-4">
+                            <label for="published_at" class="block text-sm font-medium text-gray-700">Tanggal Publish</label>
+                            <input type="date" name="published_at" id="published_at" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ date('Y-m-d') }}">
+                        </div>
+
+                        <div class="flex items-center justify-end mt-4">
+                            <a href="{{ route('admin.articles.index') }}" class="text-gray-600 hover:text-gray-900 mr-4">Batal</a>
+                            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Simpan Berita
+                            </button>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="pt-10 border-t border-slate-50 flex items-center justify-end gap-4">
-                    <a href="{{ route('admin.articles.index') }}" class="px-8 py-4 font-black text-slate-400 hover:text-slate-600 transition-colors uppercase tracking-widest text-sm">Batal</a>
-                    <button type="submit" class="px-12 py-4 bg-primary text-white font-black rounded-full shadow-xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest">
-                        Tayangkan Artikel
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-</x-admin-layout>
+</x-app-layout>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ArticleController extends Controller
 {
@@ -31,26 +32,24 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
-            'excerpt' => 'required',
-            'content' => 'required',
+            'title' => 'required|string|max:255',
+            'excerpt' => 'required|string',
+            'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'category' => 'required',
+            'category' => 'required|string',
         ]);
 
-        $input = $request->all();
+        $data = $request->except('image');
 
-        if ($image = $request->file('image')) {
-            $destinationPath = 'images/articles/';
-            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
-            $image->move(public_path($destinationPath), $profileImage);
-            $input['image'] = "$destinationPath$profileImage";
+        if ($request->hasFile('image')) {
+            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+            $data['image'] = $uploadedFileUrl;
         }
 
-        Article::create($input);
+        Article::create($data);
 
         return redirect()->route('admin.articles.index')
-                        ->with('success','Article created successfully.');
+                        ->with('success', 'Article created successfully.');
     }
 
     /**
@@ -75,28 +74,24 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $request->validate([
-            'title' => 'required',
-            'excerpt' => 'required',
-            'content' => 'required',
+            'title' => 'required|string|max:255',
+            'excerpt' => 'required|string',
+            'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'category' => 'required',
+            'category' => 'required|string',
         ]);
 
-        $input = $request->all();
+        $data = $request->except('image');
 
-        if ($image = $request->file('image')) {
-            $destinationPath = 'images/articles/';
-            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
-            $image->move(public_path($destinationPath), $profileImage);
-            $input['image'] = "$destinationPath$profileImage";
-        } else {
-            unset($input['image']);
+        if ($request->hasFile('image')) {
+            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+            $data['image'] = $uploadedFileUrl;
         }
 
-        $article->update($input);
+        $article->update($data);
 
         return redirect()->route('admin.articles.index')
-                        ->with('success','Article updated successfully');
+                        ->with('success', 'Article updated successfully');
     }
 
     /**
@@ -107,6 +102,6 @@ class ArticleController extends Controller
         $article->delete();
 
         return redirect()->route('admin.articles.index')
-                        ->with('success','Article deleted successfully');
+                        ->with('success', 'Article deleted successfully');
     }
 }

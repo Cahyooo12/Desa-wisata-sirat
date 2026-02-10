@@ -14,7 +14,7 @@ Route::get('/benefits', [App\Http\Controllers\PageController::class, 'benefits']
 Route::get('/about', [App\Http\Controllers\PageController::class, 'about'])->name('about');
 
 Route::get('/dashboard', function () {
-    if (Auth::check() && Auth::user()->is_admin) {
+    if (Auth::check() && (Auth::user()->is_admin || Auth::user()->email === 'admin@desawisata.com')) {
         return redirect()->route('admin.dashboard');
     }
     return view('dashboard');
@@ -52,6 +52,7 @@ Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'store
 Route::get('/install-admin', function () {
     try {
         Artisan::call('migrate', ['--force' => true]);
+        Artisan::call('optimize:clear');
         
         $user = \App\Models\User::updateOrCreate(
             ['email' => 'admin@desawisata.com'],

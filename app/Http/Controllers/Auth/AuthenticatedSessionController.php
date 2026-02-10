@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if (Auth::user()->is_admin) {
+        if (Auth::user()->is_admin || Auth::user()->email === 'admin@desawisata.com') {
             return redirect()->route('admin.dashboard');
         }
 
