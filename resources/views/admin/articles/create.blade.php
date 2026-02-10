@@ -33,13 +33,47 @@
                             </select>
                         </div>
 
-                            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                Simpan Berita
-                            </button>
+                        <div>
+                            <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Ringkasan (Excerpt)</label>
+                            <textarea name="excerpt" rows="3" class="w-full px-6 py-4 rounded-[2rem] bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900" placeholder="Ringkasan singkat..."></textarea>
                         </div>
-                    </form>
+
+                        <div>
+                            <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Konten Lengkap</label>
+                            <textarea name="content" rows="10" class="w-full px-6 py-4 rounded-[2rem] bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900" placeholder="Isi berita lengkap..."></textarea>
+                        </div>
+                    </div>
+
+                    {{-- Right Column --}}
+                    <div class="space-y-6">
+                        <div>
+                            <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Gambar Utama</label>
+                            <div class="space-y-4">
+                                <input type="text" name="image" placeholder="Paste URL Gambar (Opsional)" class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900 text-sm">
+                                <div class="relative">
+                                    <input type="file" name="image_file" class="hidden" id="image_file">
+                                    <label for="image_file" class="w-full h-48 border-2 border-dashed border-slate-200 rounded-[2rem] flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-slate-50 transition-colors">
+                                        <span class="material-symbols-outlined text-slate-400 text-3xl">cloud_upload</span>
+                                        <span class="text-xs font-black text-slate-400 uppercase tracking-widest">Klik untuk Upload File</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Tanggal Publish (Opsional)</label>
+                            <input type="date" name="published_at" class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900">
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                <div class="pt-10 border-t border-slate-50 flex items-center justify-end gap-4">
+                    <a href="{{ route('admin.articles.index') }}" class="px-8 py-4 font-black text-slate-400 hover:text-slate-600 transition-colors uppercase tracking-widest text-sm">Batal</a>
+                    <button type="submit" class="px-12 py-4 bg-primary text-white font-black rounded-full shadow-xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest">
+                        Simpan Berita
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </x-admin-layout>

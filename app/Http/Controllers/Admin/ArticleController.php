@@ -35,14 +35,21 @@ class ArticleController extends Controller
             'title' => 'required|string|max:255',
             'excerpt' => 'required|string',
             'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|string',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category' => 'required|string',
         ]);
 
-        $data = $request->except('image');
+        $data = $request->except(['image', 'image_file']);
 
-        if ($request->hasFile('image')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+        // Use URL if provided
+        if ($request->filled('image')) {
+            $data['image'] = $request->image;
+        }
+
+        // Override with uploaded file if present
+        if ($request->hasFile('image_file')) {
+            $uploadedFileUrl = Cloudinary::upload($request->file('image_file')->getRealPath())->getSecurePath();
             $data['image'] = $uploadedFileUrl;
         }
 
@@ -77,14 +84,21 @@ class ArticleController extends Controller
             'title' => 'required|string|max:255',
             'excerpt' => 'required|string',
             'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|string',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category' => 'required|string',
         ]);
 
-        $data = $request->except('image');
+        $data = $request->except(['image', 'image_file']);
 
-        if ($request->hasFile('image')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+        // Use URL if provided
+        if ($request->filled('image')) {
+            $data['image'] = $request->image;
+        }
+
+        // Override with uploaded file if present
+        if ($request->hasFile('image_file')) {
+            $uploadedFileUrl = Cloudinary::upload($request->file('image_file')->getRealPath())->getSecurePath();
             $data['image'] = $uploadedFileUrl;
         }
 

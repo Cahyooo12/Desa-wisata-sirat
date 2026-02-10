@@ -65,15 +65,23 @@
                                         <span class="text-xs font-black text-slate-400 uppercase tracking-widest">Ganti Gambar (Upload)</span>
                                     </label>
                                 </div>
-                                Kembali
-                            </button>
-                            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                Update Berita
-                            </button>
+                            </div>
                         </div>
-                    </form>
+
+                        <div>
+                            <label class="text-sm font-black text-slate-700 ml-4 mb-2 block uppercase tracking-widest">Tanggal Publish (Opsional)</label>
+                            <input type="date" name="published_at" value="{{ $article->published_at ? $article->published_at->format('Y-m-d') : '' }}" class="w-full h-14 px-6 rounded-full bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary transition-all font-bold text-slate-900">
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                <div class="pt-10 border-t border-slate-50 flex items-center justify-end gap-4">
+                    <a href="{{ route('admin.articles.index') }}" class="px-8 py-4 font-black text-slate-400 hover:text-slate-600 transition-colors uppercase tracking-widest text-sm">Batal</a>
+                    <button type="submit" class="px-12 py-4 bg-primary text-white font-black rounded-full shadow-xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </x-admin-layout>
