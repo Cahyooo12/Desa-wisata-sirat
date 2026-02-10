@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProductController extends Controller
 {
@@ -34,13 +35,21 @@ class ProductController extends Controller
             'name' => 'required',
             'price' => 'required|numeric',
             'category' => 'required',
+            'image' => 'nullable|string',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $data = $request->except('image_file');
+        $data = $request->except(['image', 'image_file']);
 
+        // Use URL if provided
+        if ($request->filled('image')) {
+            $data['image'] = $request->image;
+        }
+
+        // Override with uploaded file if present
         if ($request->hasFile('image_file')) {
-            $path = $request->file('image_file')->store('products', 'public');
-            $data['image'] = '/storage/' . $path;
+            $uploadedFileUrl = Cloudinary::upload($request->file('image_file')->getRealPath())->getSecurePath();
+            $data['image'] = $uploadedFileUrl;
         }
 
         Product::create($data);
@@ -75,14 +84,22 @@ class ProductController extends Controller
             'name' => 'required',
             'price' => 'required|numeric',
             'category' => 'required',
+            'image' => 'nullable|string',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $product = Product::findOrFail($id);
-        $data = $request->except('image_file');
+        $data = $request->except(['image', 'image_file']);
 
+        // Use URL if provided
+        if ($request->filled('image')) {
+            $data['image'] = $request->image;
+        }
+
+        // Override with uploaded file if present
         if ($request->hasFile('image_file')) {
-            $path = $request->file('image_file')->store('products', 'public');
-            $data['image'] = '/storage/' . $path;
+            $uploadedFileUrl = Cloudinary::upload($request->file('image_file')->getRealPath())->getSecurePath();
+            $data['image'] = $uploadedFileUrl;
         }
 
         $product->update($data);
