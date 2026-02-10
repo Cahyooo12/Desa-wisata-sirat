@@ -50,7 +50,7 @@ class ArticleController extends Controller
         // Override with uploaded file if present
         if ($request->hasFile('image_file')) {
             $path = $request->file('image_file')->store('articles', 'public');
-            $data['image'] = url('storage/' . $path);
+            $data['image'] = Storage::url($path);
         }
 
         Article::create($data);
@@ -99,7 +99,7 @@ class ArticleController extends Controller
         // Override with uploaded file if present
         if ($request->hasFile('image_file')) {
             $path = $request->file('image_file')->store('articles', 'public');
-            $data['image'] = url('storage/' . $path);
+            $data['image'] = Storage::url($path);
         }
 
         $article->update($data);
